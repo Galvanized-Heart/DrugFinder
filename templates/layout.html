@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+
+    <link href="/static/styles.css" rel="stylesheet">
+    <script src="/static/script.js"></script>
+
+    {% block head %}{% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+  
+</head>
+
+<body>
+
+    <header>
+        <h1><a href="/">Drug Finder</a></h1>
+        <nav>
+            <a href="/">Restart</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Drug Finder Website</p>
+        <p>by</p>
+        <p>Max Kirby, 2023</p>
+    </footer>
+
+</body>
+</html>

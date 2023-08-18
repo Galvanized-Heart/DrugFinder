@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Targets
+{% endblock %}
+
+{% block main %}
+
+<section>
+    <p id="debug">{{debug}}</p>
+    <h2>Query ChEMBL for a Target</h2>
+    <form action="/targets" method="post">
+        <input autocomplete="off" autofocus name="target" placeholder="Search" type="text" class="search-bar">
+        <button type="submit" class="search-btn">Submit</button>
+    </form>
+        
+    <h3>Targets:</h3>
+    <table id="target">
+        <thead>
+            <tr>
+                <th>ChEMBL ID</th>
+                <th>Organism</th>
+                <th>Name</th>
+                <th>Target Type</th>
+            </tr>
+        </thead>
+        <tbody>           
+            {% for i in target_query %}
+            <tr type="button" onclick="selectTarget('{{i.target_chembl_id}}')">
+                <td >{{i.target_chembl_id}}</td>
+                <td>{{i.organism}}</td>
+                <td>{{i.pref_name}}</td>
+                <td>{{i.target_type}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<form id="target_selection" action="/drugs" method="post"></form>
+
+<aside>
+    <h3>Instructions:</h3>
+    <p>Click on the highlighted row to select a target.</p>
+
+    <h3>Save Data Files:</h3>
+    <p>have files for data as they come up</p>
+    <p>-raw bioactivity data for all compounds from selected target</p>
+    <p>-preprocessed bioactivity data</p>
+</aside>
+
+{% endblock %}

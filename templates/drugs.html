@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Drugs
+{% endblock %}
+
+{% block main %}
+
+<section>
+    <p id="debug">{{debug}}</p>
+    <h2>Query ChEMBL for a Target</h2>
+    <form action="/targets" method="post">
+        <input autocomplete="off" autofocus name="target" placeholder="Search" type="text" class="search-bar">
+        <button type="submit" class="search-btn">Submit</button>
+    </form>
+
+    <h3>Potential Drugs:    
+        {% if stats_buttons %}
+        <div>   
+            <button class="table-btn" onclick="lipinski()">Show Lipinski Descriptions</button>
+            <button class="table-btn" onclick="compareModels()">Compare ML Models</button>
+        </div>
+        {% endif %}
+    </h3>
+    <table id="drugs">
+        <thead>
+            <tr>
+                <th>ChEMBL ID</th>
+                <th>SMILES</th>
+                <th>IC50 (nM)</th>
+                <th>Bioactivity</th>
+            </tr>
+        </thead>
+        <tbody>           
+            {% for i in drug_query %}
+            <tr type="button" onclick="">
+                <td>{{i.molecule_chembl_id}}</td>
+                <td>{{i.canonical_smiles}}</td>
+                <td >{{i.standard_value}}</td>
+                <td>{{i.bioactivity_class}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<form id="lipinski" action="/descriptors" method="post"></form>
+<form id="compareModels" action="/models" method="post"></form>
+
+<aside>
+    <h3>Instructions:</h3>
+    <p>Compute Lipinski descriptors with statistics</p>
+    <p>or</p> 
+    <p>Compare machine learning model to see which is best for predicting pIC50 based on chemical structures.</p>
+
+    <h3>Save Data Files:</h3>
+    <p>have files for data as they come up</p>
+    <p>-raw bioactivity data for all compounds from selected target</p>
+    <p>-preprocessed bioactivity data</p>
+</aside>
+
+{% endblock %}

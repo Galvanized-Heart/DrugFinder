@@ -1,0 +1,31 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+
+{% block main %}
+
+<section>
+    <p id="debug">{{debug}}</p>
+    <h2>Query ChEMBL for a Target</h2>
+    <form action="/targets" method="post">
+        <input autocomplete="off" autofocus name="target" placeholder="Search" type="text" class="search-bar">
+        <button type="submit" class="search-btn">Submit</button>
+    </form>
+</section>
+
+<aside>
+    <h3>Instructions:</h3>
+    <p>Search for a target organism or protein in the search bar.</p>
+
+    <p>Select the desired machine learning model for regression plot.</p>
+    <h3>Save Data Files:</h3>
+    <p>have files for data as they come up</p>
+    <p>-raw bioactivity data for all compounds from selected target</p>
+    <p>-preprocessed bioactivity data</p>
+</aside>
+
+{% endblock %}
