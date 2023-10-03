@@ -13,6 +13,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# ML model
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.feature_selection import VarianceThreshold
+
 # File management
 import os
 import io
@@ -97,6 +102,7 @@ def mannwhitney(df, descriptor):
 
     # Compare active and inactive samples
     stat, p = mannwhitneyu(active, inactive)
+    print(stat, p)
 
     # Interpret
     alpha = 0.05
@@ -131,25 +137,24 @@ def plotToImage(fig):
 
     return img_base64
 
-def padeldescriptors():
-    # mol_dir (molecules.smi)
-    # remove salt, standardize nitro, fingerprints, 
-    # descriptorypes (./PaDEL-Descriptor/PubchemFingerprinter.xml),
-    # dir (./)
-    # d_file (descriptors.csv)
-    /home/galvanized_heart/projects/drug_design/Part3/PaDEL-Descriptor/PubchemFingerprinter.xml
+def padeldescriptors(df):
 
-    "java -Xms1G -Xmx1G -Djava.awt.headless=true -jar ./PaDEL-Descriptor/PaDEL-Descriptor.jar -removesalt -standardizenitro -fingerprints -descriptortypes ./PaDEL-Descriptor/PubchemFingerprinter.xml -dir ./ -file descriptors_output.csv"
+    # Converts SMILES to PubChem Fingerprints w/ padel software
+    
+    df.to_csv('molecule.smi', sep='\t', index=False, header=False)
 
+    try:
+        exit_code = os.system('bash padel.sh') 
+        if exit_code != 0:
+            print(f"Error: Script exited with non-zero code: {exit_code}")
+    except Exception as e:
+        print(f"Error: {e}")
 
-    padeldescriptor(
-        descriptortypes="./PaDEL-Descriptor/PubchemFingerprinter.xml",
-        mol_dir="molecules.smi",
-        d_file="descriptors.csv",
-        fingerprints=True,
-        removesalt=True,
-        standardizenitro=True
-        )
+    df_X = pd.read_csv('descriptors_output.csv').drop(columns=['Name'])
+    df_Y = df['pIC50']
 
+    df_out = pd.concat([df_X,df_Y], axis=1)
 
+    # TODO: Delete both csvs that get created
 
+    return df_out

@@ -129,9 +129,6 @@ def descriptors():
 
         utest.append(mannwhitney(df, descriptor))
         
-    
-    
-
     return render_template('descriptors.html', images=images, utest=utest)
 
 @app.route('/models', methods=['POST'])
@@ -143,7 +140,39 @@ def models():
     # Convert IC50 to pIC50 (cap at IC50 = 100,000,000 nM)
     df = pIC50(df, max=100_000_000.0)
 
-    df.to_csv('molecule.smi', sep='\t', index=False, header=False)
+    # Convert SMILES to PubChem Fingerprints
+    df = padeldescriptors(df)
+
+    # Seperate dep and indep var
+    X = df.drop('pIC50', axis=1)
+    Y = df.pIC50
+
+    # Clean up low variance data
+    selection = VarianceThreshold(threshold=(.8 * (1 - .8))) # (%train * (1 - %train))  
+    X = selection.fit_transform(X)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2) # 80% train, 20% test
+
+    # Create regression model
+    model = RandomForestRegressor(n_estimators=100)
+    model.fit(X_train, Y_train)
+    r2 = model.score(X_test, Y_test) # binary values must be in int, not float 
+
+    # Test model accuracy
+    Y_pred = model.predict(X_test)
+
+    # ** PLOT 1: Regression Plot for Model **
+    fig = plt.figure(figsize=(5.5, 5.5))
+    sns.set(color_codes=True)
+    sns.set_style("white")
+    ax = sns.regplot(x=Y_test, y=Y_pred, scatter_kws={'alpha':0.4})
+    ax.set_xlabel('Experimental pIC50', fontsize='large', fontweight='bold')
+    ax.set_ylabel('Predicted pIC50', fontsize='large', fontweight='bold')
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, 12)
+    ax.figure.set_size_inches(5, 5)
+    plotToImage(fig)
+
+    return render_template()
 
 if __name__ == '__main__':
     app.run(debug=True)

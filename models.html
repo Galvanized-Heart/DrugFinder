@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Models
+{% endblock %}
+
+{% block main %}
+
+<section>
+    <table id="plots">
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[0] }}"></td>
+            <td><p></p></td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[1] }}"></td>
+            <td><p></p></td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[2] }}"></td>
+            <td>
+                <table>
+                    {% for key, value in utest[0].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[3] }}"></td>
+            <td>
+                <table>
+                    {% for key, value in utest[1].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[4] }}"></td>
+            <td>
+                <table>
+                    {% for key, value in utest[2].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[5] }}"></td>
+            <td>
+                <table>
+                    {% for key, value in utest[3].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ images[6] }}"></td>
+            <td>
+                <table>
+                    {% for key, value in utest[4].items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<aside>
+    <h3>Instructions:</h3>
+    <p>Compute Lipinski descriptors with statistics</p>
+    <p>or</p> 
+    <p>Compare machine learning model to see which is best for predicting pIC50 based on chemical structures.</p>
+
+    <h3>Save Data Files:</h3>
+    <p>have files for data as they come up</p>
+    <p>-raw bioactivity data for all compounds from selected target</p>
+    <p>-preprocessed bioactivity data</p>
+</aside>
+
+{% endblock %}
