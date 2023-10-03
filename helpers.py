@@ -20,6 +20,7 @@ from sklearn.feature_selection import VarianceThreshold
 
 # File management
 import os
+import subprocess
 import io
 import base64
     
@@ -125,7 +126,6 @@ def mannwhitney(df, descriptor):
     return results
 
 def plotToImage(fig):
-    
     # Converts plt plot to .png to display on webapp
     
     buffer = io.BytesIO()
@@ -138,23 +138,25 @@ def plotToImage(fig):
     return img_base64
 
 def padeldescriptors(df):
-
     # Converts SMILES to PubChem Fingerprints w/ padel software
     
-    df.to_csv('molecule.smi', sep='\t', index=False, header=False)
+    df_Y = df['pIC50']
+
+    df[['canonical_smiles','molecule_chembl_id']].to_csv('molecule.smi', sep='\t', index=False, header=False)
 
     try:
-        exit_code = os.system('bash padel.sh') 
+        exit_code = os.system('bash ./PaDeL/padel.sh') 
         if exit_code != 0:
             print(f"Error: Script exited with non-zero code: {exit_code}")
     except Exception as e:
         print(f"Error: {e}")
 
-    df_X = pd.read_csv('descriptors_output.csv').drop(columns=['Name'])
-    df_Y = df['pIC50']
+    df_X = pd.read_csv('descriptors_output.csv')
+    df_X = df_X.drop(columns=['Name'])
 
     df_out = pd.concat([df_X,df_Y], axis=1)
-
-    # TODO: Delete both csvs that get created
+    
+    os.remove('molecule.smi')
+    os.remove('descriptors_output.csv')
 
     return df_out

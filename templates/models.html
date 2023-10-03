@@ -4,16 +4,54 @@
     Models
 {% endblock %}
 
-{% block section %}
+{% block main %}
 
-{% endblock %}
-
-{% block aside %}
+<section>
+    <table id="plots">
+        <tr>
+            <td><img src="data:image/png;base64,{{ image }}"></td>
+            <td><p></p></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><p></p></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <table>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>/td>
+            <td>
+                <table>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <table>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <table>
+                </table>
+        </tr>
+    </table>
+</section>
 
 <aside>
     <h3>Instructions:</h3>
-    <p>Select the desired machine learning model for regression plot.</p>
-    
+    <p>Compute Lipinski descriptors with statistics</p>
+    <p>or</p> 
+    <p>Compare machine learning model to see which is best for predicting pIC50 based on chemical structures.</p>
+
     <h3>Save Data Files:</h3>
     <p>have files for data as they come up</p>
     <p>-raw bioactivity data for all compounds from selected target</p>

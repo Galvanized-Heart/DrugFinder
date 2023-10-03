@@ -136,6 +136,7 @@ def models():
     
     # Fetch current df
     df = session['curr_df']
+    print(df)
 
     # Convert IC50 to pIC50 (cap at IC50 = 100,000,000 nM)
     df = pIC50(df, max=100_000_000.0)
@@ -170,9 +171,9 @@ def models():
     ax.set_xlim(0, 12)
     ax.set_ylim(0, 12)
     ax.figure.set_size_inches(5, 5)
-    plotToImage(fig)
+    image = plotToImage(fig)
 
-    return render_template()
+    return render_template('models.html', image=image)
 
 if __name__ == '__main__':
     app.run(debug=True)
